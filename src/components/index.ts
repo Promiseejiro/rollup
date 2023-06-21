@@ -1,3 +1,3 @@
 import { Button } from "./Button/";
-
-export { Button };
+import {Resizer} from "./Resizer"
+export { Button,Resizer };

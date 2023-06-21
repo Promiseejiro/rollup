@@ -1,0 +1,45 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.App {
+  border: 2px solid red;
+  height: 100vh;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.defaultSizeContainer {
+  border: 1px solid gray;
+  position: absolute;
+}
+
+.element-being-resized {
+  position: absolute;
+  z-index: -1;
+  border: 3px solid red;
+}
+
+.resizer {
+  position: absolute;
+  border: 0.5px solid gray;
+}
+
+.box-resizer {
+  position: absolute;
+  background-color: gray;
+  border-radius: 50%;
+  height: 15px;
+  width: 15px;
+}
+
+.box-resizer:hover {
+  background-color: black;
+}
+
+.resizer:hover {
+  border: 2px solid black;
+}

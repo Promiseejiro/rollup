@@ -1,3 +1,3 @@
-import { Button } from "./components/";
+import { Button,Resizer } from "./components/";
 
-export { Button };
+export { Button,Resizer };

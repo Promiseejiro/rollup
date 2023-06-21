@@ -17,12 +17,15 @@ export const Basic: Story = {
   },
 };
 
-export const WithProp: Story = {
+/*export const WithProp: Story = {
   render: () => <Button label="buttton" primary={true} backgroundColor="red" />,
 };
+*/
 
 export const Secondary: Story = {
   args: {
     label: "Secondary 😇",
+    check:"text",
+  disabled:false,
   },
 };
