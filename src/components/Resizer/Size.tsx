@@ -1,8 +1,14 @@
 import React, { useEffect, useState, useRef, RefObject } from "react";
-import "./resizer.css";
+//import "./App.css";
 type ContainerRefType = RefObject<HTMLDivElement>;
+
 interface ResizerProps{
   resizerFunc:any;
+  backgroundurl: String;
+  positionX:Number;
+  positionY:Number;
+  backgroundWidth:Number;
+  backgroundHeight:Number;
 }
 interface DefaultContainerInterface {
   width: Number;
@@ -13,6 +19,7 @@ interface DefaultContainerInterface {
   right: Number;
   x: Number;
   y: Number;
+  
 }
 
 interface ResizerInterface {
@@ -31,7 +38,7 @@ interface TouchPointInterface {
   y: any;
 }
 
-export const Resizer = ({resizerFunc}:ResizerProps) =>{
+const Resizer = ({resizerFunc,backgroundurl,positionY,positionX,backgroundWidth,backgroundHeight}:ResizerProps) => {
   // ref start
   //   const defaultSizeContainerRef = useRef(null);
   const defaultSizeContainerRef: ContainerRefType =
@@ -88,16 +95,17 @@ export const Resizer = ({resizerFunc}:ResizerProps) =>{
 
   const touchStart = (e: any) => {
     setMoving(true);
-    for (let i = 0; i < e.changedTouches.length; i++) {
+    if(defaultSizeContainerRef.current){
+      for (let i = 0; i < e.changedTouches.length; i++) {
       var x = e.changedTouches[i].clientX;
       var y = e.changedTouches[i].clientY;
      setTouchPoint({
       ...touchPoint,
-      x: x - Number(defaultSizeContainer.width) / 2,
+      x: x -Number( defaultSizeContainer.width )/ 2,
       y: y - Number(defaultSizeContainer.height) / 2,
     });
     
-    setDefaultSizeContainer({
+   setDefaultSizeContainer({
       ...defaultSizeContainer,
       left: defaultSizeContainerRef.current.getBoundingClientRect().left,
       top: defaultSizeContainerRef.current.getBoundingClientRect().top,
@@ -105,6 +113,7 @@ export const Resizer = ({resizerFunc}:ResizerProps) =>{
       bottom: defaultSizeContainerRef.current.getBoundingClientRect().bottom,
     });
   }
+    }
   }
 
   const onMouseDown = (e: any) => {
@@ -124,21 +133,27 @@ export const Resizer = ({resizerFunc}:ResizerProps) =>{
   };
 
   const touchEnd = (e: any) => {
-    /*  setMoving(false);
+    for (let i = 0; i < e.changedTouches.length; i++) {
+      var x = e.changedTouches[i].clientX;
+      var y = e.changedTouches[i].clientY;
+      setMoving(false);
+      if(defaultSizeContainerRef.current){
     setTouchPoint({
       ...touchPoint,
-      x: touchPointChecker(e).x - defaultSizeContainer.width / 2,
-      y: touchPointChecker(e).y - defaultSizeContainer.height / 2,
+      x: x -Number( defaultSizeContainer.width )/ 2,
+      y:y - Number(defaultSizeContainer.height) / 2,
     });
 
-  /*  setDefaultSizeContainer({
+   setDefaultSizeContainer({
       ...defaultSizeContainer,
       left: defaultSizeContainerRef.current.getBoundingClientRect().left,
       top: defaultSizeContainerRef.current.getBoundingClientRect().top,
       right: defaultSizeContainerRef.current.getBoundingClientRect().right,
       bottom: defaultSizeContainerRef.current.getBoundingClientRect().bottom,
-    });*/
-  };
+    });
+  }
+  }
+  }
   const onMouseUp = (e: any) => {
     var x = e.clientX;
     var y = e.clientY;
@@ -244,7 +259,6 @@ export const Resizer = ({resizerFunc}:ResizerProps) =>{
          Number( defaultSizeContainer.top) - (Number( defaultSizeContainer.top )- touchPoint.y),
       });
     }
-    
     if (resizer.bottom) {
       setTouchPoint({
         ...touchPoint,
@@ -298,7 +312,6 @@ export const Resizer = ({resizerFunc}:ResizerProps) =>{
         x: x,
         y: y,
       });
-
     setDefaultSizeContainer({
         ...defaultSizeContainer,
         left:
@@ -332,178 +345,172 @@ export const Resizer = ({resizerFunc}:ResizerProps) =>{
         right: touchPoint.x,
       });
     }
-      }
+          }
       }
       
-      resizerFunc(defaultSizeContainer.left,defaultSizeContainer.top,defaultSizeContainer.height,defaultSizeContainer.width)
+    resizerFunc(defaultSizeContainer.left,defaultSizeContainer.top,defaultSizeContainer.height,defaultSizeContainer.width)
     }
  
   const mouseMove = (e: any) => {
     var x = e.clientX;
     var y = e.clientY;
-    /* if (moving) {
+     if (moving) {
       setTouchPoint({
         ...touchPoint,
-        x: MousePoint.x - defaultSizeContainer.width / 2,
-        y: MousePoint.y - defaultSizeContainer.height / 2,
+        x: x - Number(defaultSizeContainer.width) / 2,
+        y: y- Number(defaultSizeContainer.height) / 2,
       });
+      if(defaultSizeContainerRef.current){
    setDefaultSizeContainer({
         ...defaultSizeContainer,
-        x: (x = e.clientX - defaultSizeContainer.width / 2),
-        y: e.clientY - defaultSizeContainer.height / 2,
-        left: defaultSizeContainerRef.current.getBoundingClientRect().left,
+        x: x -Number (defaultSizeContainer.width )/ 2,
+        y: y -Number( defaultSizeContainer.height) / 2,
+      /*  left: defaultSizeContainerRef.current.getBoundingClientRect().left,
         top: defaultSizeContainerRef.current.getBoundingClientRect().top,
         right: defaultSizeContainerRef.current.getBoundingClientRect().right,
-        bottom: defaultSizeContainerRef.current.getBoundingClientRect().bottom,
-        box_left: defaultSizeContainer.left,
-        box_top: defaultSizeContainer.height / 2,
+        bottom: defaultSizeContainerRef.current.getBoundingClientRect().bottom,*/
+     /*   box_left: defaultSizeContainer.left,
+        box_top:Number(defaultSizeContainer.height ) / 2,*/
       });
-    }*/
-    /*
+      }
+      
+      
+     }
+    
+    
     if (resizer.rightBottom) {
-      setTouchPoint({
+setTouchPoint({
         ...touchPoint,
-        x: MousePoint(e).x,
-        y: MousePoint(e).y,
+        x: x,
+        y: y,
       });
       setDefaultSizeContainer({
         ...defaultSizeContainer,
-        width: defaultSizeContainer.right - defaultSizeContainer.left,
+        width:Number( defaultSizeContainer.right) - Number(defaultSizeContainer.left),
         right: touchPoint.x,
-        height: defaultSizeContainer.bottom - defaultSizeContainer.top,
+        height:Number( defaultSizeContainer.bottom )- Number( defaultSizeContainer.top),
         bottom: touchPoint.y,
       });
     }
-    if (resizer.leftBottom) {
+if (resizer.leftBottom) {
       setTouchPoint({
         ...touchPoint,
-        x: MousePoint(e).x,
-        y: MousePoint(e).y,
+        x: x,
+        y: y,
       });
       setDefaultSizeContainer({
         ...defaultSizeContainer,
-        height: defaultSizeContainer.bottom - defaultSizeContainer.top,
+        height: Number(defaultSizeContainer.bottom) - Number(defaultSizeContainer.top),
         bottom: touchPoint.y,
         left:
-          defaultSizeContainer.left -
-          (defaultSizeContainer.left - touchPoint.x),
+         Number( defaultSizeContainer.left )-
+          (Number(defaultSizeContainer.left) - touchPoint.x),
         width:
-          defaultSizeContainer.width +
-          (defaultSizeContainer.left - touchPoint.x),
+         Number( defaultSizeContainer.width )+
+          (Number(defaultSizeContainer.left )- touchPoint.x),
       });
     }
 
     if (resizer.leftTop) {
-      setTouchPoint({
+              setTouchPoint({
         ...touchPoint,
-        x: MousePoint(e).x,
-        y: MousePoint(e).y,
+        x: x,
+        y: y,
       });
 
-      setDefaultSizeContainer({
+    setDefaultSizeContainer({
         ...defaultSizeContainer,
         left:
-          defaultSizeContainer.left -
-          (defaultSizeContainer.left - touchPoint.x),
+        Number (defaultSizeContainer.left) -
+          (Number(defaultSizeContainer.left) - touchPoint.x),
         width:
-          defaultSizeContainer.width +
-          (defaultSizeContainer.left - touchPoint.x),
+         Number( defaultSizeContainer.width) +
+          (Number(defaultSizeContainer.left) - touchPoint.x),
         height:
-          defaultSizeContainer.height +
-          (defaultSizeContainer.top - touchPoint.y),
+         Number( defaultSizeContainer.height) +
+          (Number(defaultSizeContainer.top )- touchPoint.y),
         top:
-          defaultSizeContainer.top - (defaultSizeContainer.top - touchPoint.y),
-      });
+        Number(defaultSizeContainer.top )- (Number(defaultSizeContainer.top) - touchPoint.y),
+      })
     }
-
-    if (resizer.rightTop) {
+if (resizer.rightTop) {
       setTouchPoint({
         ...touchPoint,
-        x: MousePoint(e).x,
-        y: MousePoint(e).y,
+        x: x,
+        y: y,
       });
       setDefaultSizeContainer({
         ...defaultSizeContainer,
         height:
-          defaultSizeContainer.height +
-          (defaultSizeContainer.top - touchPoint.y),
+        Number(defaultSizeContainer.height) +
+          (Number(defaultSizeContainer.top) - touchPoint.y),
         top:
-          defaultSizeContainer.top - (defaultSizeContainer.top - touchPoint.y),
-        width: defaultSizeContainer.right - defaultSizeContainer.left,
+        Number(defaultSizeContainer.top) - (Number(defaultSizeContainer.top) - touchPoint.y),
+        width: Number(defaultSizeContainer.right) - Number(defaultSizeContainer.left),
         right: touchPoint.x,
       });
     }
-
     if (resizer.right) {
       setTouchPoint({
         ...touchPoint,
-        x: MousePoint(e).x,
-        y: MousePoint(e).y,
+        x: x,
+        y: y,
       });
       setDefaultSizeContainer({
         ...defaultSizeContainer,
-        width: defaultSizeContainer.right - defaultSizeContainer.left,
+        width:Number( defaultSizeContainer.right) - Number( defaultSizeContainer.left),
         right: touchPoint.x,
       });
-      if (
-        defaultSizeContainer.right < defaultSizeContainer.left ||
-        defaultSizeContainer.bottom < defaultSizeContainer.top
-      ) {
-        setStopResizing(true);
-      }
-    }
 
-    if (resizer.left) {
+    }
+if (resizer.left) {
       setTouchPoint({
         ...touchPoint,
-        x: MousePoint(e).x,
-        y: MousePoint(e).y,
+        x: x,
+        y: y,
       });
       setDefaultSizeContainer({
         ...defaultSizeContainer,
         x:
-          defaultSizeContainer.left -
-          (defaultSizeContainer.left - touchPoint.x),
+         Number(defaultSizeContainer.left )-
+          (Number( defaultSizeContainer.left)- touchPoint.x),
         left:
-          defaultSizeContainer.left -
-          (defaultSizeContainer.left - touchPoint.x),
+         Number( defaultSizeContainer.left )-
+          (Number(defaultSizeContainer.left )- touchPoint.x),
         width:
-          defaultSizeContainer.width +
-          (defaultSizeContainer.left - touchPoint.x),
-      });
-    }
-    if (resizer.top) {
-      setTouchPoint({
-        ...touchPoint,
-        x: MousePoint(e).x,
-        y: MousePoint(e).y,
-      });
-
-      setDefaultSizeContainer({
-        ...defaultSizeContainer,
-        height:
-          defaultSizeContainer.height +
-          (defaultSizeContainer.top - touchPoint.y),
-        y: defaultSizeContainer.top - (defaultSizeContainer.top - touchPoint.y),
-        top:
-          defaultSizeContainer.top - (defaultSizeContainer.top - touchPoint.y),
+          Number(defaultSizeContainer.width) +
+          (Number(defaultSizeContainer.left) - touchPoint.x),
       });
     }
     if (resizer.bottom) {
       setTouchPoint({
         ...touchPoint,
-        x: MousePoint(e).x,
-        y: MousePoint(e).y,
+        x: x,
+        y: y,
+      });
+      setDefaultSizeContainer({
+        ...defaultSizeContainer,
+        height:Number(defaultSizeContainer.bottom) - Number( defaultSizeContainer.top),
+        bottom: touchPoint.y,
+      });
+    }if (resizer.top) {
+      setTouchPoint({
+        ...touchPoint,
+        x:x,
+        y: y,
       });
 
       setDefaultSizeContainer({
         ...defaultSizeContainer,
-        height: defaultSizeContainer.bottom - defaultSizeContainer.top,
-        bottom: touchPoint.y,
+        height:
+        Number (defaultSizeContainer.height) +
+          (Number(defaultSizeContainer.top )- touchPoint.y),
+        y: Number(defaultSizeContainer.top) - (Number(defaultSizeContainer.top) - touchPoint.y),
+        top:
+         Number( defaultSizeContainer.top) - (Number( defaultSizeContainer.top )- touchPoint.y),
       });
-    }*/
+    }
   };
-
   const stopResizingAndMoving = () => {
     setResizer({
       ...resizer,
@@ -519,10 +526,8 @@ export const Resizer = ({resizerFunc}:ResizerProps) =>{
   };
 
   // useEffect(() => {}, [defaultSizeContainer]);
-
   return (
     <div
-      className="App"
       onMouseMove={mouseMove}
       onTouchMove={TouchMove}
       onMouseUp={stopResizingAndMoving}
@@ -530,17 +535,22 @@ export const Resizer = ({resizerFunc}:ResizerProps) =>{
       onDrag={(e) => {
         e.preventDefault();
       }}
+      style={{
+        position:"absolute",
+        backgroundImage:`url("${backgroundurl}")`
+      }}
     >
       <div
         className="defaultSizeContainer"
         style={{
-          position: "absolute",
+          position:"absolute",
           width: `${defaultSizeContainer.width}px`,
           height: `${defaultSizeContainer.height}px`,
           left: `${defaultSizeContainer.x}px`,
           top: `${defaultSizeContainer.y}px`,
-          opacity: "0",
-          border: "5px solid yellow",
+          opacity: 1,
+          backgroundPosition:"59px 69px",
+          backgroundSize:"360px 360px"
         }}
         onTouchStart={touchStart}
         onTouchEnd={touchEnd}
@@ -557,7 +567,9 @@ export const Resizer = ({resizerFunc}:ResizerProps) =>{
           height: `${defaultSizeContainer.height}px`,
           left: `${defaultSizeContainer.x}px`,
           top: `${defaultSizeContainer.y}px`,
-          border: `2px solid blue`,
+          backgroundImage:`url("${backgroundurl}")`,
+        backgroundPosition:`${positionX}px ${positionY}px`,
+          backgroundSize:`${backgroundWidth}px ${backgroundHeight}px`
         }}
         onDrag={(e) => e.preventDefault()}
       ></div>
@@ -565,17 +577,21 @@ export const Resizer = ({resizerFunc}:ResizerProps) =>{
       <div
         className="box-resizer "
         style={{
-          left: `${Number(defaultSizeContainer.right) - 6}px`,
-          top: `${Number(defaultSizeContainer.bottom )- 6}px`,
+        position: "absolute",
+          width: "10px",
+          height: "10px",
+          border: "2px solid red",
+     left: `${Number(defaultSizeContainer.right) - 6}px`,
+      top: `${Number(defaultSizeContainer.bottom )- 6}px`,
         }}
-        onTouchStart={() => {
-          setResizer({ ...resizer, rightBottom: true });
+   onTouchStart={() => {
+     setResizer({ ...resizer, rightBottom: true });
         }}
-        onTouchEnd={() => {
-          setResizer({ ...resizer, rightBottom: false });
+    onTouchEnd={() => {
+    setResizer({ ...resizer, rightBottom: false });
         }}
         onMouseDown={() => {
-          setResizer({ ...resizer, rightBottom: true });
+     setResizer({ ...resizer, rightBottom: true });
         }}
         onMouseUp={() => {
           setResizer({ ...resizer, rightBottom: false });
@@ -585,6 +601,10 @@ export const Resizer = ({resizerFunc}:ResizerProps) =>{
       <div
         className="box-resizer"
         style={{
+        position: "absolute",
+          width: "10px",
+          height: "10px",
+          border: "2px solid red",
           left: `${Number(defaultSizeContainer.left )- 6}px`,
           top: `${Number(defaultSizeContainer.bottom )- 6}px`,
         }}
@@ -603,8 +623,12 @@ export const Resizer = ({resizerFunc}:ResizerProps) =>{
       ></div>
       {/* top-left  */}
       <div
-        className="box-resizer "
+        className="box-resizer"  
         style={{
+          position: "absolute",
+          width: "10px",
+          height: "10px",
+          border: "2px solid red",
           left: `${Number(defaultSizeContainer.left )- 6}px`,
           top: `${Number(defaultSizeContainer.top) - 6}px`,
         }}
@@ -625,6 +649,10 @@ export const Resizer = ({resizerFunc}:ResizerProps) =>{
       <div
         className="box-resizer"
         style={{
+          position: "absolute",
+          width: "10px",
+          height: "10px",
+          border: "2px solid red",
           left: `${Number(defaultSizeContainer.right )- 6}px`,
           top: `${Number(defaultSizeContainer.top)- 6}px`,
         }}
@@ -646,13 +674,13 @@ export const Resizer = ({resizerFunc}:ResizerProps) =>{
         className="box-resizer "
         style={{
           position: "absolute",
-          width: "6px",
-          height: "6px",
+          width: "10px",
+          height: "10px",
           border: "2px solid red",
           left: `${Number(defaultSizeContainer.right) - 6}px`,
           top: `${
             Number(defaultSizeContainer.top) +
-            Number(defaultSizeContainer.height) / 2.5
+            Number(defaultSizeContainer.height) / 2
           }px`,
         }}
         onTouchStart={() => {
@@ -673,10 +701,10 @@ export const Resizer = ({resizerFunc}:ResizerProps) =>{
       <div
         className="box-resizer "
         style={{
-          width: "6px",
-          height: "6px",
-          border: `2px solid blue`,
           position: "absolute",
+          width: "10px",
+          height: "10px",
+          border: `2px solid blue`,
           left: `${Number(defaultSizeContainer.left) - 6}px`,
           top: `${
             Number(defaultSizeContainer.top) +
@@ -700,10 +728,10 @@ export const Resizer = ({resizerFunc}:ResizerProps) =>{
       <div
         className="box-resizer"
         style={{
-          width: "6px",
-          height: "6px",
-          border: `2px solid blue`,
           position: "absolute",
+          width: "10px",
+          height: "10px",
+          border: "2px solid red",
           left: `${
             Number(defaultSizeContainer.left) +
             Number(defaultSizeContainer.width) / 2.1
@@ -727,10 +755,10 @@ export const Resizer = ({resizerFunc}:ResizerProps) =>{
       <div
         className="box-resizer"
         style={{
-          width: "6px",
-          height: "6px",
-          border: `2px solid blue`,
           position: "absolute",
+          width: "10px",
+          height: "10px",
+          border: "2px solid red",
           left: `${
             Number(defaultSizeContainer.left) +
             Number(defaultSizeContainer.width) / 2.1
@@ -753,3 +781,5 @@ export const Resizer = ({resizerFunc}:ResizerProps) =>{
     </div>
   );
 };
+
+export default Resizer;
